@@ -1,5 +1,3 @@
-import datetime
-
 class Usuario:
     def __init__(self, id = None, login = "", senha="", cpf="", cadastrado=None, editado=None):
         self.id = id

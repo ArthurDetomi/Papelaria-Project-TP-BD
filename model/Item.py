@@ -1,9 +1,5 @@
-from Venda import Venda
-from Produto import Produto
-import datetime
-
 class Item:
-    def __init__(self, id : int,venda : Venda, produto : Produto, quantidade : int, desconto : float, valor : float, cadastrado : datetime):
+    def __init__(self, id=None,venda=None, produto=None, quantidade=None, desconto=None, valor=None, cadastrado=None):
         self.id = id
         self.venda = venda
         self.produto = produto

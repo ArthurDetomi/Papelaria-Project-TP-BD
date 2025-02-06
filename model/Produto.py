@@ -1,9 +1,5 @@
-import datetime
-from Categoria import Categoria
-
-
 class Produto:
-    def __init__(self, id : int, nome : str, preco : float, categoria : Categoria, quantidade : int, unidadeMedida : str, cadastrado : datetime, editado : datetime):
+    def __init__(self, id=None, nome=None, preco=None, categoria=None, quantidade=None, unidadeMedida=None, cadastrado=None, editado=None):
         self.id = id
         self.nome = nome
         self.preco = preco
