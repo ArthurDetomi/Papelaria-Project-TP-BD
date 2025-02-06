@@ -15,8 +15,7 @@ class DatabaseConfig:
             for line in f:
                 str = line.split("=")
                 properties[str[0]] = str[1].rstrip("\n")
-                print(properties)
-            
+                            
         return properties 
             
         
