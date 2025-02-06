@@ -31,7 +31,23 @@ class UsuarioDao(GenericDao):
         
         return Usuario(id=id_, login=login, senha=senha, cpf=cpf, cadastrado=cadastrado, editado=editado)
     
-    def save(self, entity):
-        return super().save(entity)
+    def save(self, usuario : Usuario):
+        with Database() as db:
+            result = db.query("INSERT INTO usuario (login, senha, cpf) values (%s, %s, %s)", (usuario.login, usuario.senha, usuario.cpf,))
+        return result
+    
+    def delete(self, id):
+        with Database() as db:
+            result = db.query("DELETE FROM usuario WHERE id = %s", (id,))
+        return result
+    
+    def update(self, usuario : Usuario):
+        with Database() as db:
+            result = db.query("UPDATE usuario SET login=%s, senha=%s, cpf=%s WHERE id = %s", (usuario.login,usuario.senha,usuario.id,))
+        return result
+    
+            
+        
+
     
     

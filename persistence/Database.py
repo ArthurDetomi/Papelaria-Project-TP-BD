@@ -20,12 +20,19 @@ class Database:
         return self
     
     def query(self, query, params=None, fetch=False, fetch_one=False):
-        self.cur.execute(query, params)
-        if fetch:
-            return self.cur.fetchall()
-        if fetch_one:
-            return self.cur.fetchone()
-        self.conn.commit()
+        try:
+            self.cur.execute(query, params)
+            if fetch:
+                return self.cur.fetchall()
+            if fetch_one:
+                return self.cur.fetchone()
+            self.conn.commit()
+
+            return self.cur.rowcount > 0
+        except Exception as e:
+            self.conn.rollback()
+            return False
+            
 
     def close(self):
         self.cur.close()

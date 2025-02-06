@@ -10,3 +10,6 @@ class GenericDao:
 
     def delete(self, id):
         raise NotImplementedError()
+    
+    def update(self, entity):
+        raise NotImplementedError()

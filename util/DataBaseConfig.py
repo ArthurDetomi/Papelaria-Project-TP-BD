@@ -14,9 +14,6 @@ class DatabaseConfig:
         with open('resources/db.properties', encoding="utf-8") as f:
             for line in f:
                 str = line.split("=")
-                
-                
-                
                 properties[str[0]] = str[1].rstrip("\n")
                 print(properties)
             
