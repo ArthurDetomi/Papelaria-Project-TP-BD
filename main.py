@@ -1,38 +1,35 @@
-from persistence.UsuarioDao import UsuarioDao
-from model.Usuario import Usuario
+from view.UsuarioView import exibir_menu
+from controller.UsuarioController import UsuarioController
+from controller.ClienteController import ClienteController
 
 def main():
-    dao = UsuarioDao()
-    
-    usuario = Usuario(login="teste_login", cpf="123-123-123-30", senha="123")
+    usuario_controller = UsuarioController()
+    cliente_controller = ClienteController()
 
-    if dao.save(usuario):
-        print("Usuario 1 cadastrado")
-        
-    usuario2 = Usuario(login="teste_login2", cpf="123-123-123-31", senha="123")
+    while True:
+        opcao = exibir_menu()
 
-    if dao.save(usuario2):
-        print("Usuario 2 cadastrado")
-    
-    users = dao.find_all()
-    print(users)
-
-    usuario = dao.find_by_id(1)
-    print(usuario)
-    print(dao.find_by_id(12))
-    
-    
-    if dao.delete(17):
-        print("Usuario 2 deletado")
-    #else:
-        print("não deletou")
-    
-    usuario.login = "teste_login__"
-    if (dao.update(usuario)):
-        print("Usuario atualizado")
-    else:
-        print("Não atualizou")
-
+        if opcao == "0":
+            print("Saindo do sistema...")
+            break
+        elif opcao == "1":
+            usuario_controller.cadastrar_usuario()
+        elif opcao == "2":
+            usuario_controller.atualizar_usuario()
+        elif opcao == "3":
+            usuario_controller.deletar_usuario()
+        elif opcao == "4":
+            usuario_controller.listar_usuarios()
+        elif opcao == "5":
+            cliente_controller.cadastrar_cliente()
+        elif opcao == "6":
+            cliente_controller.atualizar_cliente()
+        elif opcao == "7":
+            cliente_controller.deletar_cliente()
+        elif opcao == "8":
+            cliente_controller.listar_clientes()
+        else:
+            print("Opção inválida, tente novamente.")
 
 if __name__ == "__main__":
     main()
