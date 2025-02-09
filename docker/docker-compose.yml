@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   postgres:
     image: postgres:latest
@@ -9,10 +7,10 @@ services:
     environment:
       POSTGRES_USER: lucas
       POSTGRES_PASSWORD: 123
-      POSTGRES_DB: papelaria
+      POSTGRES_DB: db_tp
     volumes:
       - ../db_schema.sql:/docker-entrypoint-initdb.d/db_schema.sql
-      - papelaria_pgdata:/var/lib/postgresql/data
+      - db_tp_pgdata:/var/lib/postgresql/data
 
 volumes:
-  papelaria_pgdata:
+  db_tp_pgdata:

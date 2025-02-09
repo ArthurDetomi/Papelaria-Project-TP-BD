@@ -1,35 +1,54 @@
-from view.UsuarioView import exibir_menu
-from controller.UsuarioController import UsuarioController
-from controller.ClienteController import ClienteController
+from view.UsuarioView import *
+from view.ClienteView import *
 
 def main():
-    usuario_controller = UsuarioController()
-    cliente_controller = ClienteController()
-
+    
     while True:
-        opcao = exibir_menu()
+        print("\n=== MENU PRINCIPAL ===")
+        print("[0] Sair do sistema")
+        print("[1] Usuários")
+        print("[2] Clientes")
 
-        if opcao == "0":
+        opcao_externa = int(input("Escolha uma opção: "))
+
+        if opcao_externa == 1:
+            while True:
+                opcao_usuario = exibir_menu_usuario()
+
+                if opcao_usuario == "0":
+                    print("Voltando...")
+                    break
+                elif opcao_usuario == "1":
+                    view_cadastrar_usuario()
+                elif opcao_usuario == "2":
+                    view_atualizar_usuario()
+                elif opcao_usuario == "3":
+                    view_deletar_usuario()
+                elif opcao_usuario == "4":
+                    view_listar_usuario()
+                else:
+                    print("Opção inválida, tente novamente.")
+        elif opcao_externa == 2:
+            while True:
+                opcao_cliente = exibir_menu_cliente()
+
+                if opcao_cliente == "0":
+                    print("Voltando...")
+                    break
+                elif opcao_cliente == "1":
+                    view_cadastrar_cliente()
+                    print("Voltou do cadastro cliente")
+                elif opcao_cliente == "2":
+                    view_atualizar_cliente()
+                elif opcao_cliente == "3":
+                    view_deletar_cliente()
+                elif opcao_cliente == "4":
+                    view_listar_cliente()
+                else:
+                    print("Opção inválida, tente novamente.")
+        else:
             print("Saindo do sistema...")
             break
-        elif opcao == "1":
-            usuario_controller.cadastrar_usuario()
-        elif opcao == "2":
-            usuario_controller.atualizar_usuario()
-        elif opcao == "3":
-            usuario_controller.deletar_usuario()
-        elif opcao == "4":
-            usuario_controller.listar_usuarios()
-        elif opcao == "5":
-            cliente_controller.cadastrar_cliente()
-        elif opcao == "6":
-            cliente_controller.atualizar_cliente()
-        elif opcao == "7":
-            cliente_controller.deletar_cliente()
-        elif opcao == "8":
-            cliente_controller.listar_clientes()
-        else:
-            print("Opção inválida, tente novamente.")
 
 if __name__ == "__main__":
     main()

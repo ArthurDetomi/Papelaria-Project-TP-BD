@@ -1,34 +1,42 @@
-# persistence/Database.py
-
 import psycopg2
-from psycopg2.extras import RealDictCursor
-from config import DATABASE_CONFIG
+
+from util.DataBaseConfig import DatabaseConfig
 
 class Database:
     def __init__(self):
-        """Inicializa a conexão com o banco de dados usando as configurações definidas."""
-        self.connection = psycopg2.connect(**DATABASE_CONFIG)
-        self.cursor = self.connection.cursor(cursor_factory=RealDictCursor)
-
-    def query(self, sql, params=None, fetch=False, fetch_one=False):
-        """Executa uma consulta no banco de dados."""
-        try:
-            self.cursor.execute(sql, params or ())
-            if fetch_one:
-                return self.cursor.fetchone()
-            if fetch:
-                return self.cursor.fetchall()
-            self.connection.commit()
-        except psycopg2.Error as e:
-            print(f"Erro ao executar a query: {e}")
-            self.connection.rollback()
-        return None
+        db_config = DatabaseConfig()
+            
+        self.conn = psycopg2.connect(
+            database= db_config.database,
+            host = db_config.host,
+            user = db_config.user,
+            password = db_config.password,
+            port = db_config.port
+        )
+        
+        self.cur = self.conn.cursor()
 
     def __enter__(self):
-        """Permite o uso de 'with' para gerenciamento seguro da conexão."""
         return self
+    
+    def query(self, query, params=None, fetch=False, fetch_one=False):
+        try:
+            self.cur.execute(query, params)
+            if fetch:
+                return self.cur.fetchall()
+            if fetch_one:
+                return self.cur.fetchone()
+            self.conn.commit()
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        """Garante o fechamento correto da conexão."""
-        self.cursor.close()
-        self.connection.close()
+            return self.cur.rowcount > 0
+        except Exception as e:
+            self.conn.rollback()
+            return False
+            
+
+    def close(self):
+        self.cur.close()
+        self.conn.close()
+        
+    def __exit__(self,exc_type, exc_value, traceback):
+        self.close()

@@ -5,38 +5,27 @@ class UsuarioController:
     def __init__(self):
         self.usuario_dao = UsuarioDao()
 
-    def cadastrar_usuario(self):
-        print("\n=== Cadastrar Usuário ===")
-        login = input("Login: ")
-        senha = input("Senha: ")
-        cpf = input("CPF: ")
+    def cadastrar_usuario(self, login, senha, cpf):
 
         usuario = Usuario(login=login, senha=senha, cpf=cpf)
-        self.usuario_dao.save(usuario)
-        print("Usuário cadastrado com sucesso!")
+        if self.usuario_dao.save(usuario):
+            print("Usuário cadastrado com sucesso!")
+        else:
+            print("Usuário já cadastrado!")
 
-    def atualizar_usuario(self):
-        print("\n=== Atualizar Usuário ===")
-        id = input("ID do usuário: ")
+    def atualizar_usuario(self, id, login, senha, cpf):
+
         usuario = self.usuario_dao.find_by_id(id)
-
         if usuario:
-            print(f"Usuário encontrado: {usuario.login} - {usuario.cpf}")
-            login = input("Novo Login (deixe em branco para manter o atual): ") or usuario.login
-            senha = input("Nova Senha (deixe em branco para manter a atual): ") or usuario.senha
-            cpf = input("Novo CPF (deixe em branco para manter o atual): ") or usuario.cpf
-
-            usuario.login = login
-            usuario.senha = senha
-            usuario.cpf = cpf
+            usuario.login = login or usuario.login
+            usuario.senha = senha or usuario.senha
+            usuario.cpf = cpf or usuario.cpf
             self.usuario_dao.update(usuario)
             print("Usuário atualizado com sucesso!")
         else:
             print("Usuário não encontrado.")
 
-    def deletar_usuario(self):
-        print("\n=== Deletar Usuário ===")
-        id = input("ID do usuário: ")
+    def deletar_usuario(self, id):
 
         usuario = self.usuario_dao.find_by_id(id)
         if usuario:
@@ -46,11 +35,6 @@ class UsuarioController:
             print("Usuário não encontrado.")
 
     def listar_usuarios(self):
-        print("\n=== Lista de Usuários ===")
         usuarios = self.usuario_dao.find_all()
 
-        if usuarios:
-            for usuario in usuarios:
-                print(f"ID: {usuario.id}, Login: {usuario.login}, CPF: {usuario.cpf}")
-        else:
-            print("Nenhum usuário cadastrado.")
+        return usuarios
