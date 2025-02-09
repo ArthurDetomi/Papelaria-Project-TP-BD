@@ -4,4 +4,11 @@ class Categoria:
         self.nome = nome
         self.cadastrado = cadastrado
         self.editado = editado
-        
+    
+    def __str__(self):
+        return (
+            f"ID: {self.id}\n"
+            f"Nome: {self.nome}\n"
+            f"Data de cadastro: {self.cadastrado}\n"
+            f"Ultima modificacao: {self.editado}"
+        )

@@ -43,7 +43,7 @@ class UsuarioDao(GenericDao):
     
     def update(self, usuario : Usuario):
         with Database() as db:
-            result = db.query("UPDATE usuario SET login=%s, senha=%s, cpf=%s WHERE id = %s", (usuario.login,usuario.senha,usuario.id,))
+            result = db.query("UPDATE usuario SET login=%s, senha=%s, cpf=%s WHERE id = %s", (usuario.login,usuario.senha,usuario.cpf,usuario.id,))
         return result
     
             

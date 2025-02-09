@@ -32,7 +32,7 @@ class CategoriaDao:
 
     def save(self, categoria : Categoria):
         with Database() as db:
-            result = db.query("INSERT INTO categoria (nome) values (%s)", (categoria.nome,))
+            result = db.query("INSERT INTO categoria (nome, cadastrado, editado) values (%s, %s, %s)", (categoria.nome, categoria.cadastrado, categoria.editado))
         return result
 
     def delete(self, id):
@@ -42,7 +42,7 @@ class CategoriaDao:
 
     def update(self, categoria : Categoria):
         with Database() as db:
-            result = db.query("UPDATE categoria SET nome=%s WHERE id = %s", (categoria.nome, categoria.id,))
+            result = db.query("UPDATE categoria SET nome=%s, editado=%s WHERE id = %s", (categoria.nome, categoria.editado, categoria.id,))
         return result
 
 
