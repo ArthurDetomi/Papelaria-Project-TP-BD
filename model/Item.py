@@ -5,6 +5,12 @@ class Item:
         self.produto = produto
         self.quantidade = quantidade
         self.desconto = desconto
-        self.valor = valor
         self.cadastrado = cadastrado
-        
+        self.valor = self.calcularValor()
+
+    def calcularValor(self):
+        valor_total = self.produto.preco * self.quantidade
+
+        valor_com_desconto = valor_total * (1 - self.desconto / 100)
+
+        return valor_com_desconto

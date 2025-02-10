@@ -1,0 +1,2 @@
+class VendaController:
+    pass

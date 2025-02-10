@@ -1,0 +1,2 @@
+class FormaPagamentoController:
+    pass
