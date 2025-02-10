@@ -1,7 +1,5 @@
 from termcolor import colored
 
-from datetime import datetime
-
 class FormaPagamento:
     def __init__(self, id=None,  nome=None, cadastrado=None, editado=None):
         self.id = id

@@ -32,7 +32,8 @@ class CategoriaDao:
 
     def save(self, categoria : Categoria):
         with Database() as db:
-            result = db.query("INSERT INTO categoria (nome, cadastrado, editado) values (%s, %s, %s)", (categoria.nome, categoria.cadastrado, categoria.editado))
+            result = db.query("INSERT INTO categoria (nome) values (%s)", (categoria.nome,))
+
         return result
 
     def delete(self, id):

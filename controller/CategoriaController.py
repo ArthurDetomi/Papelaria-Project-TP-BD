@@ -6,65 +6,22 @@ class CategoriaController:
     def __init__(self):
         self.categoria = CategoriaDao()
 
-    def CadastrarCategoria(self):
-        print("\n=== Cadastramento de categoria ===")
-        nome = input("Categoria: ")
+    def __init__(self):
+        self.categoria_dao = CategoriaDao()
 
-        if nome == "":
-            print("Erro: Categoria invalida!")
-            return
-        
-        cadastrado = datetime.now()
+    def find_all(self):
+        return self.categoria_dao.find_all()
 
-        categoria = Categoria(nome=nome, cadastrado=cadastrado, editado=None)
-        self.categoria.save(categoria)
-
-        print("Categoria cadastrada com sucesso!")
+    def cadastrar(self, nome : str):
+        categoria = Categoria(nome=nome)
     
-    def AtualizarCategoria(self):
-        print("\n=== Atualizar categoria ===")
-        
-        id = input("ID da categoria: ")
-        categoria = self.categoria.find_by_id(id)
+        return self.categoria_dao.save(categoria)
 
-        if categoria:
-            print(f"Categoria: {categoria.nome}")
-            nome = input("Nova categoria: ")
-            if nome != "":
-                categoria.editado = datetime.now()
-                categoria.nome = nome
+    def find_by_id(self, id):
+        return self.categoria_dao.find_by_id(id)
 
-            else:
-                categoria.nome = categoria.nome
-            
-            self.categoria.update(categoria)
+    def atualizar(self, forma_pagamento : Categoria):
+        return self.categoria_dao.update(forma_pagamento)
 
-            print("Categoria atualizada com sucesso!")
-        else:
-            print("Categoria nao encontrada.")
-
-    def DeletarCategoria(self):
-        print("\n=== Deletar categoria ===")
-        id = input("ID da categoria: ")
-
-        categoria = self.categoria.find_by_id(id)
-
-        if categoria:
-            self.categoria.delete(id)
-            print("Categoria deletada com sucesso!")
-        else:
-            print("Categoria nao encontrada.")
-
-
-    def ListarCategoria(self):
-        print("\n=== Listar categorias ===")
-        categoria = self.categoria.find_all()
-
-        if categoria:
-            categoriaordenado = sorted(categoria, key=lambda x: x.id)
-            for categorias in categoriaordenado:
-                print(f"ID: {categorias.id}\nNome: {categorias.nome}\n"
-                        f"Data e hora de cadastro: {categorias.cadastrado}\n"
-                            f"Data e hora da ultima modificação: {categorias.editado}")
-        else:
-            print("Nenhuma categoria foi cadastrada.")
+    def deletar(self, id):
+        return self.categoria_dao.delete(id)
