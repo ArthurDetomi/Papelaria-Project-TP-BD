@@ -137,14 +137,24 @@ class MenuVendaUI(MenuEntity):
         print(colored("    Deletar Venda", 'yellow', attrs=['bold']))
         print(colored("="*40, 'cyan'))
 
-        id_venda = get_int(msg="Informe o id da venda:", min=1)
+        while True:
+            id_venda = get_int(msg="Informe o id da venda:", min=1)
 
-        is_success = self.venda_controller.delete(id_venda)
+            is_success = self.venda_controller.delete(id_venda)
 
-        if is_success:
-            print(colored("\nVenda removida com sucesso!", 'green', attrs=['bold']))
-        else:
-            print(colored("\nFalha ao deletar a venda.", 'red', attrs=['bold']))
+            if is_success:
+                print(colored("\nVenda removida com sucesso!", 'green', attrs=['bold']))
+            else:
+                print(colored("\nFalha ao deletar a venda.", 'red', attrs=['bold']))
+
+            print(colored("\nDeseja deletar mais vendas?", 'cyan'))
+            print(colored("[0] Não", 'red'), colored("[1] Sim", 'green'))
+
+            opcao = get_int(msg="\nSelecione: ", min=0, max=1)
+
+            if opcao == 0:
+                break
+
 
 
     def listar(self):
