@@ -42,6 +42,6 @@ class FormaPagamentoDao:
 
     def update(self, forma_pagamento : FormaPagamento):
         with Database() as db:
-            result = db.query("UPDATE forma_pagamento SET nome=%s WHERE id = %s", (forma_pagamento.nome, forma_pagamento.id,))
+            result = db.query("UPDATE forma_pagamento SET nome=%s, editado=%s WHERE id = %s", (forma_pagamento.nome, forma_pagamento.editado, forma_pagamento.id,))
         return result
 
