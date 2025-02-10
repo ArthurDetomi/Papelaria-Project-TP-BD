@@ -30,6 +30,17 @@ class ClienteDao():
 
         return Cliente(id=id_, nome=nome, telefone=telefone, cpf=cpf, cadastrado=cadastrado, editado=editado)
 
+    def find_by_cpf(self, cpf):
+        with Database() as db:
+            result = db.query("SELECT * FROM cliente WHERE cpf = %s", params=(cpf,), fetch_one=True)
+
+        if result is None:
+            return None
+
+        id_, nome, cpf, telefone, cadastrado, editado = result
+
+        return Cliente(id=id_, nome=nome, telefone=telefone, cpf=cpf, cadastrado=cadastrado, editado=editado)
+
     def save(self, cliente : Cliente):
         with Database() as db:
             result = db.query("INSERT INTO cliente (nome, cpf, telefone) values (%s, %s, %s)", (cliente.nome, cliente.cpf, cliente.telefone,))

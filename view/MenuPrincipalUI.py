@@ -1,6 +1,8 @@
 from view.MenuAbstrato import MenuAbstrato
 from view.MenuVendaUI import MenuVendaUI
+
 from service.UserSession import UserSession
+
 from termcolor import colored
 
 class MenuPrincipal(MenuAbstrato):
@@ -18,11 +20,11 @@ class MenuPrincipal(MenuAbstrato):
 
     def runOption(self, option : int):
         if option == 0:
-            return -1
+            return 0
         elif option == 1:
             print("Ainda não implementado!")
         elif option == 2:
-            print("Ainda não implementado!")
+            self.menu_venda_ui.mostrarMenu()
         elif option == 3:
             print("Ainda não implementado!")
         elif option == 4:

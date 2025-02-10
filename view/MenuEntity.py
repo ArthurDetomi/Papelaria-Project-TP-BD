@@ -22,8 +22,10 @@ class MenuEntity(MenuAbstrato):
             self.listar()
         elif option == 3:
             self.remover()
+        else:
+            print(colored("Opção Inválida!", 'red', attrs=['bold']))
 
-    def showOptions():
+    def showOptions(self):
         print(colored("[0] Voltar", 'red', attrs=['bold']))
         print(colored("[1] Cadastrar", 'green'))
         print(colored("[2] Visualizar", 'green'))

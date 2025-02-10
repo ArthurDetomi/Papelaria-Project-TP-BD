@@ -8,11 +8,11 @@ class MenuAbstrato:
 
             self.showOptions()
 
-            option = get_int("Informe sua opção: ")
+            option = get_int(msg="Informe sua opção: ", min=0)
 
             option_selected = self.runOption(option)
 
-            if option_selected == -1:
+            if option_selected == 0:
                 print(colored("Fim do programa", 'light_red', attrs=['bold']))
                 print(colored("Obrigado por usar o sistema! Até a próxima!", 'green', attrs=['bold']))
                 break

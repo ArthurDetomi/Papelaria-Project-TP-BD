@@ -8,6 +8,7 @@ from service.UserSession import UserSession
 
 from controller.VendaController import VendaController
 from controller.ProdutoController import ProdutoController
+from controller.ClienteController import ClienteController
 from controller.ItemController import ItemController
 from controller.FormaPagamentoController import FormaPagamentoController
 
@@ -21,8 +22,7 @@ class MenuVendaUI(MenuEntity):
         self.produto_controller = ProdutoController()
         self.item_controller = ItemController()
         self.forma_pagamento_controller = FormaPagamentoController()
-
-
+        self.cliente_controller = ClienteController()
 
     def showTitle(self):
         print(colored("=====================================", 'cyan'))
@@ -30,31 +30,35 @@ class MenuVendaUI(MenuEntity):
         print(colored("=====================================", 'cyan'))
 
     def cadastrar(self):
-        print("====Cadastro")
+        print(colored("="*40, 'cyan'))
+        print(colored("    Cadastro de Venda", 'yellow', attrs=['bold']))
+        print(colored("="*40, 'cyan'))
 
         venda = Venda(usuario=UserSession.getLoggedUser())
 
         # Coletar itens da venda
         items = []
         while True:
-            nome_produto = input("Digite o nome do produto:")
+            print(colored("\nDigite os dados do produto", 'blue', attrs=['bold']))
+            nome_produto = input(colored("Nome do produto: ", 'green'))
 
             produto = self.produto_controller.buscar_por_nome(nome_produto)
 
             if produto == None:
-                print("Não foi encontrado o produto com o respectivo nome")
+                print(colored("Produto não encontrado! Tente novamente.", 'red'))
                 continue
 
             # E se não tiver em estoque ?
-            quantidade = get_int(msg="Informe a quantidade", min=1, max=produto.quantidade, max_msg="Quantidade informada excede a quantidade em estoque do produto")
+            quantidade = get_int(msg="Informe a quantidade :", min=1, max=produto.quantidade, max_msg="Quantidade informada excede a quantidade em estoque do produto")
 
-            desconto = get_float(msg="Informe o desconto, caso não tenha basta digitar 0:", min=0.0, max=100.0)
+            desconto = get_float(msg="\nInforme o desconto, caso não tenha basta digitar [0] :", min=0.0, max=100.0)
 
-            items.append(Item(produto=produto, quantidade=quantidade, desconto=desconto))
+            items.append(Item(produto=produto, quantidade=quantidade, desconto=desconto, venda=venda))
 
-            print("Deseja adicionar mais produtos a venda [0]Não[1]Sim")
+            print(colored("\nDeseja adicionar mais produtos?", 'cyan'))
+            print(colored("[0] Não", 'red'), colored("[1] Sim", 'green'))
 
-            opcao = get_int(msg="Selecione:", min=0, max=1)
+            opcao = get_int(msg="\nSelecione: ", min=0, max=1)
 
             if opcao == 0:
                 break
@@ -67,18 +71,20 @@ class MenuVendaUI(MenuEntity):
         cliente = None
 
         while True:
-            print("Deseja informar o cliente [0]Não[1]Sim")
-            opcao = get_int("Selecione:", min=0, max=1)
+            print(colored("\nDeseja informar um cliente?", 'cyan'))
+            print(colored("[0] Não", 'red'), colored("[1] Sim", 'green'))
+
+            opcao = get_int("\nSelecione: ", min=0, max=1)
 
             if opcao == 0:
                 break
 
-            cpf_cliente = input("Digite o cpf do cliente:")
+            cpf_cliente = input(colored("Digite o CPF do cliente: ", 'green')).rstrip()
 
             cliente = self.cliente_controller.buscar_por_cpf(cpf_cliente)
 
             if cliente == None:
-                print("Não foi encontrado cliente com o respectivo cpf")
+                print(colored("Cliente não encontrado! Tente novamente.", 'red'))
                 continue
             else:
                 break
@@ -88,11 +94,11 @@ class MenuVendaUI(MenuEntity):
         # Coletar forma de pagamento da venda
         forma_pagamentos_dict = self.get_dict_formas_pagamento()
 
-        self.mostrar_formas_pagamento(formas_pagamentos=forma_pagamentos_dict)
+        self.mostrar_formas_pagamento(formas_pagamentos_dict=forma_pagamentos_dict)
 
         forma_pagamento_selected = None
 
-        opcao_pagamento = get_int("Selecione a forma de pagamento", min=0, max=len(forma_pagamentos_dict))
+        opcao_pagamento = get_int("Selecione a forma de pagamento :", min=0, max=len(forma_pagamentos_dict))
 
         forma_pagamento_selected = forma_pagamentos_dict[opcao_pagamento]
 
@@ -101,41 +107,54 @@ class MenuVendaUI(MenuEntity):
         is_venda_cadastrada = False
 
         try:
-            is_venda_cadastrada = VendaController.cadastrarVenda(venda)
+            is_venda_cadastrada = self.venda_controller.cadastrar_venda(venda)
         except Exception as e:
-            print("Ocorreu um erro inesperado ao cadastrar venda!")
+            print(colored(f"\nErro: {e}\n", 'red'))
+            print(colored("Ocorreu um erro inesperado ao cadastrar a venda.", 'red'))
 
         if is_venda_cadastrada:
-            print("Venda cadastrada com sucesso!")
+            print(colored("\nVenda cadastrada com sucesso!", 'green', attrs=['bold']))
         else:
-            print("Falha ao cadastrar venda")
-
+            print(colored("\nFalha ao cadastrar a venda.", 'red', attrs=['bold']))
 
     def get_dict_formas_pagamento(self):
-        return {}
+        formas_pagamentos = self.forma_pagamento_controller.find_all()
 
-    def mostrar_formas_pagamento(self, formas_pagamentos):
-        pass
+        dict = {}
 
+        for i in range(len(formas_pagamentos)):
+            dict[i] = formas_pagamentos[i]
 
+        return dict
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def mostrar_formas_pagamento(self, formas_pagamentos_dict = {}):
+        print("===Formas pagamentos")
+        for i in range(len(formas_pagamentos_dict)):
+            print(colored(f"[{i}] {formas_pagamentos_dict[i].nome}", 'light_blue', attrs=['bold']))
 
     def remover(self):
-        pass
+        print(colored("="*40, 'cyan'))
+        print(colored("    Deletar Venda", 'yellow', attrs=['bold']))
+        print(colored("="*40, 'cyan'))
+
+        id_venda = get_int(msg="Informe o id da venda:", min=1)
+
+        is_success = self.venda_controller.delete(id_venda)
+
+        if is_success:
+            print(colored("\nVenda removida com sucesso!", 'green', attrs=['bold']))
+        else:
+            print(colored("\nFalha ao deletar a venda.", 'red', attrs=['bold']))
+
 
     def listar(self):
-        pass
+        print(colored("="*40, 'cyan'))
+        print(colored("    Lista de Vendas", 'yellow', attrs=['bold']))
+        print(colored("="*40, 'cyan'))
+
+        vendas = self.venda_controller.find_all()
+
+        for venda in vendas:
+            print(venda)
+
+

@@ -1,11 +1,11 @@
 from termcolor import colored
 
-def get_int(msg : str, min, max, max_msg=f"Valor deve ser menor ou igual a {max}.") -> int:
+def get_int(msg : str, min = None, max = None, max_msg=f"Valor deve ser menor ou igual a {max}.") -> int:
     value = 0
 
     while True:
         try:
-            value = int(input(msg))
+            value = int(input(colored(msg, 'green')))
 
             if min is not None and value < min:
                 print(colored(f"Valor deve ser maior ou igual a {min}.", 'red', attrs=['bold']))
