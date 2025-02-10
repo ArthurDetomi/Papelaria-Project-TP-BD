@@ -1,5 +1,6 @@
 from view.MenuAbstrato import MenuAbstrato
 from view.MenuVendaUI import MenuVendaUI
+from view.MenuFormaPagamento import MenuFormaPagamento
 
 from service.UserSession import UserSession
 
@@ -9,6 +10,7 @@ class MenuPrincipal(MenuAbstrato):
     def __init__(self):
         super().__init__()
         self.menu_venda_ui = MenuVendaUI()
+        self.menu_forma_pagamento_ui = MenuFormaPagamento()
 
     def showTitle(self):
         user_login = UserSession.getLoggedUser().login
@@ -30,7 +32,7 @@ class MenuPrincipal(MenuAbstrato):
         elif option == 4:
             print("Ainda não implementado!")
         elif option == 5:
-            print("Ainda não implementado!")
+            self.menu_forma_pagamento_ui.mostrarMenu()
         elif option == 6:
             print("Ainda não implementado!")
 

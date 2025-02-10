@@ -25,14 +25,10 @@ class MenuVendaUI(MenuEntity):
         self.cliente_controller = ClienteController()
 
     def showTitle(self):
-        print(colored("=====================================", 'cyan'))
-        print(colored(f"    Vendas", 'yellow', attrs=['bold']))
-        print(colored("=====================================", 'cyan'))
+        super().showTitle("Forma de Pagamento")
 
     def cadastrar(self):
-        print(colored("="*40, 'cyan'))
-        print(colored("    Cadastro de Venda", 'yellow', attrs=['bold']))
-        print(colored("="*40, 'cyan'))
+        super().showTitle("Cadastro de Venda")
 
         venda = Venda(usuario=UserSession.getLoggedUser())
 
@@ -158,11 +154,9 @@ class MenuVendaUI(MenuEntity):
 
 
     def listar(self):
-        print(colored("="*40, 'cyan'))
-        print(colored("    Lista de Vendas", 'yellow', attrs=['bold']))
-        print(colored("="*40, 'cyan'))
+        super().showTitle("Lista de Formas de pagamento")
 
-        vendas = self.venda_controller.find_all()
+        vendas = self.forma_pagamento_controller.find_all()
 
         for venda in vendas:
             print(venda)

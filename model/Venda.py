@@ -25,4 +25,5 @@ class Venda:
             f"{colored('Cliente:', 'green')} {self.cliente.nome if self.cliente else 'Não informado'} | "
             f"{colored('Forma Pagamento:', 'blue')} {self.forma_pagamento.nome if self.forma_pagamento else 'Não informado'} | "
             f"{colored('Total:', 'magenta')} {self.total if self.total else 'Não calculado'}"
+            f"{colored('Cadastrado:', 'green')} {self.cadastrado.strftime('%d/%m/%Y %H:%M:%S') if self.cadastrado else 'Não informado'} | "
         )

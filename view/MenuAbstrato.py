@@ -17,8 +17,10 @@ class MenuAbstrato:
                 print(colored("Obrigado por usar o sistema! Até a próxima!", 'green', attrs=['bold']))
                 break
 
-    def showTitle(self):
-        raise NotImplementedError()
+    def showTitle(self, title=""):
+        print(colored("="*40, 'cyan'))
+        print(colored(f"    {title}", 'yellow', attrs=['bold']))
+        print(colored("="*40, 'cyan'))
 
     def runOption(self, option : int):
         raise NotImplementedError()
