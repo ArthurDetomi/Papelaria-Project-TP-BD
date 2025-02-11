@@ -93,49 +93,15 @@ class ProdutoController:
         except ValueError:
             print("Erro: Valores inválidos!")
 
-    def DeletarProduto(self):
-        print("\n=== Deletar Produto ===")
-        try:
-            id_produto = int(input("ID do produto: "))
-            produto = self.produto_dao.find_by_id(id_produto)
-            
-            if produto:
-                confirmacao = input(f"Tem certeza que deseja excluir '{produto.nome}'? (S/N): ").upper()
-                if confirmacao == "S":
-                    self.produto_dao.delete(id_produto)
-                    print("Produto excluído com sucesso!")
-            else:
-                print("Produto não encontrado!")
-                
-        except ValueError:
-            print("ID inválido!")
+    def deletar(self, id):
+        return self.produto_dao.delete(id)
 
-    def ListarProdutos(self):
-        print("\n=== Lista de Produtos ===")
-        produtos = self.produto_dao.find_all()
-        
-        if produtos:
-            for prod in sorted(produtos, key=lambda x: x.id):
-                print(f"ID: {prod.id}")
-                print(f"Nome: {prod.nome}")
-                print(f"Preço: R$ {prod.preco:.2f}")
-                print(f"Categoria: {prod.categoria.nome}")
-                print(f"Estoque: {prod.quantidade} {prod.unidadeMedida}")
-                print(f"Última atualização: {prod.editado or 'Nunca'}\n")
-        else:
-            print("Nenhum produto cadastrado!")
 
-    def BuscarPorNome(self):
-        print("\n=== Buscar Produtos por Nome ===")
-        termo = input("Digite o nome ou parte do nome: ")
-        resultados = self.produto_dao.buscar_por_nome(termo)
-        
-        if resultados:
-            print("\nResultados encontrados:")
-            for prod in resultados:
-                print(f"ID: {prod.id} | {prod.nome} | Estoque: {prod.quantidade} {prod.unidadeMedida}")
-        else:
-            print("Nenhum produto encontrado!")
+    def listar(self):
+        return self.produto_dao.find_all()
+
+    def find_by_id(self, id):
+        return self.produto_dao.find_by_id(id)
 
     def GerenciarEstoque(self, operacao):
         try:

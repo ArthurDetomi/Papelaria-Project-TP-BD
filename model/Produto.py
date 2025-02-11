@@ -1,3 +1,5 @@
+from termcolor import colored
+
 class Produto:
     def __init__(self,
             id=None,
@@ -18,10 +20,12 @@ class Produto:
         self.cadastrado = cadastrado
         self.editado = editado
 
-    def __str__(self):
+     def __str__(self):
         return f"""
-            ID: {self.id}
-            Produto:{self.nome}
-            Preço: {self.preco}
-            Estoque: {self.quantidade}
+            {colored('ID:', 'cyan')} {colored(self.id, 'yellow')}
+            {colored('Produto:', 'cyan')} {colored(self.nome, 'green')}
+            {colored('Preço:', 'cyan')} {colored(f'R$ {self.preco:.2f}', 'red')}
+            {colored('Estoque:', 'cyan')} {colored(self.quantidade, 'blue')}
+            {colored('Cadastrado em:', 'cyan')} {colored(self.cadastrado, 'magenta')}
+            {colored('Editado em:', 'cyan')} {colored(self.editado, 'yellow')}
         """
