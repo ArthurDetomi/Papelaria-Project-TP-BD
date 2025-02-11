@@ -22,7 +22,7 @@ def get_int(msg : str, min = None, max = None, max_msg=f"Valor deve ser menor ou
 
     return value
 
-def get_float(msg : str, min, max) -> float:
+def get_float(msg : str, min = None, max = None) -> float:
     value = 0
 
     while True:

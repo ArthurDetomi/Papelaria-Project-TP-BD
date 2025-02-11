@@ -24,8 +24,11 @@ class Produto:
         return f"""
             {colored('ID:', 'cyan')} {colored(self.id, 'yellow')}
             {colored('Produto:', 'cyan')} {colored(self.nome, 'green')}
+            {colored('Categoria:', 'cyan')} {colored(self.categoria if self.categoria else 'Não foi carregado', 'magenta')}
             {colored('Preço:', 'cyan')} {colored(f'R$ {self.preco:.2f}', 'red')}
             {colored('Estoque:', 'cyan')} {colored(self.quantidade, 'blue')}
+            {colored('Unidade de Medida:', 'cyan')} {colored(self.unidadeMedida if self.unidadeMedida else 'Não informado', 'light_blue')}
             {colored('Cadastrado em:', 'cyan')} {self.cadastrado.strftime('%d/%m/%Y %H:%M:%S') if self.cadastrado else 'Não informado'}
             {colored('Editado em:', 'cyan')} {self.editado.strftime('%d/%m/%Y %H:%M:%S') if self.editado else 'Não informado'}
         """
+
