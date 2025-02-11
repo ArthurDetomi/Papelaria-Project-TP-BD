@@ -25,7 +25,7 @@ class MenuVendaUI(MenuEntity):
         self.cliente_controller = ClienteController()
 
     def showTitle(self):
-        super().showTitle("Forma de Pagamento")
+        super().showTitle("Vendas")
 
     def cadastrar(self):
         super().showTitle("Cadastro de Venda")
@@ -154,9 +154,9 @@ class MenuVendaUI(MenuEntity):
 
 
     def listar(self):
-        super().showTitle("Lista de Formas de pagamento")
+        super().showTitle("Lista de Vendas")
 
-        vendas = self.forma_pagamento_controller.find_all()
+        vendas = self.venda_controller.find_all()
 
         for venda in vendas:
             print(venda)

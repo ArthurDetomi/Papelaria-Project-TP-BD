@@ -81,9 +81,7 @@ class MenuProduto(MenuEntity):
 
     def cadastrar(self):
         super().showTitle("Cadastrar Produto")
-        
-        super().showTitle("Atualizar Produto")
-        
+                
         produto = Produto()
             
         nome = input(self.getSuccessMessage("Nome produto: "))
