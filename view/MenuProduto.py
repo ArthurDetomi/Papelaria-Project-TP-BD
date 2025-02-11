@@ -25,7 +25,14 @@ class MenuProduto(MenuEntity):
         quantidade = input(self.getSuccessMessage("Nova Quantidade (deixe em branco para manter a atual): "))
         unidade_medida = input(self.getSuccessMessage("Nova Unidade de Medida (deixe em branco para manter a atual): "))
         
-        print("Falta terminar implementação")
+        self.produto_controller.AtualizarProduto(
+            id=id,
+            nome=nome,
+            preco=preco,
+            categoria=categoria,
+            quantidade=quantidade,
+            unidade_medida=unidade_medida
+        )
         
         
 
@@ -38,7 +45,13 @@ class MenuProduto(MenuEntity):
         quantidade = input(self.getSuccessMessage("Quantidade em estoque: "))
         unidade_medida = input(self.getSuccessMessage("Unidade de Medida: "))
         
-        print("Falta terminar implementação")
+        self.produto_controller.CadastrarProduto(
+            nome=nome,
+            preco=float(preco),
+            categoria=int(categoria),
+            quantidade=int(quantidade),
+            unidade_medida=unidade_medida,
+        )
     
     def remover(self):
         super().showTitle("Deletar Produto")
