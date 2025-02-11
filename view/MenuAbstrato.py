@@ -28,6 +28,9 @@ class MenuAbstrato:
     def getErrorMessage(self, msg : str):
         return colored(msg, 'red')
     
+    def getBlueMessage(self, msg : str):
+        return colored(msg, 'blue')
+    
     def runOption(self, option : int):
         raise NotImplementedError()
 
