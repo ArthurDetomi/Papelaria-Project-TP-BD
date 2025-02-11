@@ -8,7 +8,7 @@ from persistence.ProdutoDao import ProdutoDao
 
 class ProdutoController:
     def __init__(self):
-        self.dao = ProdutoDao()
+        self.produto_dao = ProdutoDao()
         self.categoria_dao = CategoriaDao()
 
     def buscar_por_nome(self, nome_produto : str) -> Produto:
@@ -47,7 +47,7 @@ class ProdutoController:
                 unidadeMedida=unidade_medida
             )
 
-            if self.dao.save(novo_produto):
+            if self.produto_dao.save(novo_produto):
                 print("\nProduto cadastrado com sucesso!")
                 print(f"ID gerado: {novo_produto.id}")
 
@@ -58,7 +58,7 @@ class ProdutoController:
         print("\n=== Atualizar Produto ===")
         try:
             id_produto = int(input("ID do produto: "))
-            produto = self.dao.find_by_id(id_produto)
+            produto = self.produto_dao.find_by_id(id_produto)
             
             if produto:
                 print(f"\nEditando produto: {produto.nome}")
@@ -85,7 +85,7 @@ class ProdutoController:
                 produto.unidadeMedida = nova_unidade
                 produto.categoria = nova_categoria
                 
-                if self.dao.update(produto):
+                if self.produto_dao.update(produto):
                     print("\nProduto atualizado com sucesso!")
             else:
                 print("Produto não encontrado!")
@@ -97,12 +97,12 @@ class ProdutoController:
         print("\n=== Deletar Produto ===")
         try:
             id_produto = int(input("ID do produto: "))
-            produto = self.dao.find_by_id(id_produto)
+            produto = self.produto_dao.find_by_id(id_produto)
             
             if produto:
                 confirmacao = input(f"Tem certeza que deseja excluir '{produto.nome}'? (S/N): ").upper()
                 if confirmacao == "S":
-                    self.dao.delete(id_produto)
+                    self.produto_dao.delete(id_produto)
                     print("Produto excluído com sucesso!")
             else:
                 print("Produto não encontrado!")
@@ -112,7 +112,7 @@ class ProdutoController:
 
     def ListarProdutos(self):
         print("\n=== Lista de Produtos ===")
-        produtos = self.dao.find_all()
+        produtos = self.produto_dao.find_all()
         
         if produtos:
             for prod in sorted(produtos, key=lambda x: x.id):
@@ -128,7 +128,7 @@ class ProdutoController:
     def BuscarPorNome(self):
         print("\n=== Buscar Produtos por Nome ===")
         termo = input("Digite o nome ou parte do nome: ")
-        resultados = self.dao.buscar_por_nome(termo)
+        resultados = self.produto_dao.buscar_por_nome(termo)
         
         if resultados:
             print("\nResultados encontrados:")
@@ -143,14 +143,14 @@ class ProdutoController:
             id_produto = int(input("ID do produto: "))
             quantidade = int(input("Quantidade: "))
             
-            produto = self.dao.find_by_id(id_produto)
+            produto = self.produto_dao.find_by_id(id_produto)
             if produto:
                 if operacao == "comprar":
-                    if self.dao.comprar(id_produto, quantidade):
+                    if self.produto_dao.comprar(id_produto, quantidade):
                         print(f"Estoque atualizado! Novo total: {produto.quantidade + quantidade}")
                 elif operacao == "vender":
                     if produto.quantidade >= quantidade:
-                        if self.dao.vender(id_produto, quantidade):
+                        if self.produto_dao.vender(id_produto, quantidade):
                             print(f"Venda registrada! Novo estoque: {produto.quantidade - quantidade}")
                     else:
                         print("Estoque insuficiente!")
