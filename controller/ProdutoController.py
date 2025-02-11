@@ -74,7 +74,7 @@ class ProdutoController:
                 produto.quantidade = quantidade
             if unidade_medida:
                 produto.unidade_medida = unidade_medida
-            self.produto_dao.update(produto)
+            return self.produto_dao.update(produto)
         except ValueError:
             return ValueError
 

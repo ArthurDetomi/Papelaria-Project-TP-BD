@@ -7,6 +7,7 @@ cadastro, listagem, remoção e atualização dos produtos.
 from view.MenuEntity import MenuEntity
 from util.NumberUtil import get_int, get_float
 from controller.ProdutoController import ProdutoController
+from controller.CategoriaController import CategoriaController
 from termcolor import colored
 
 
@@ -16,10 +17,20 @@ class MenuProduto(MenuEntity):
     def __init__(self):
         super().__init__()
         self.produto_controller = ProdutoController()
+        self.categoria_controller = CategoriaController()
 
     def show_title(self, title=""):
         """Exibe o título do menu de produtos."""
         return super().show_title("Produtos")
+
+    def mostrar_categorias(self):
+        """Exibe categorias disponíveis"""
+        categorias = self.categoria_controller.find_all()
+        
+        print(self.get_blue_message("===Categorias"))
+        
+        for categoria in categorias:
+            print(colored(f"[{categoria.id}] {categoria.nome}", 'light_blue', attrs=['bold']))
 
     def atualizar(self):
         """
@@ -29,21 +40,62 @@ class MenuProduto(MenuEntity):
         """
         super().show_title("Atualizar Produto")
 
-        id_produto = input(self.get_success_message("ID do produto: "))
-        novo_nome = input(self.get_success_message("Novo Nome (deixe em branco para manter o atual): "))
-        novo_preco = input(self.get_success_message("Novo Preço (deixe em branco para manter o atual): "))
-        nova_categoria = input(self.get_success_message("Nova Categoria (deixe em branco para manter a atual): "))
-        nova_quantidade = input(self.get_success_message("Nova Quantidade (deixe em branco para manter a atual): "))
-        nova_unidade = input(self.get_success_message("Nova Unidade de Medida (deixe em branco para manter a atual): "))
+        id_produto = get_int(self.get_success_message("ID do produto: "))
 
-        self.produto_controller.atualizar_produto(
-            id=get_int(id_produto),
-            nome=novo_nome,
-            preco=get_float(novo_preco),
-            categoria=get_int(nova_categoria),
-            quantidade=get_int(nova_quantidade),
-            unidade_medida=nova_unidade
-        )
+        produto_obj = self.produto_controller.find_by_id(id_produto)
+        while produto_obj is None:
+            self.get_error_message("Digite o ID de um produto válido!")
+            id_produto = get_int(self.get_success_message("ID do produto: "))
+            produto_obj = self.produto_controller.find_by_id(id_produto)
+
+        novo_nome = input(self.get_success_message("Novo Nome (deixe em branco para manter o atual): "))
+        if novo_nome:
+            produto_obj.nome = novo_nome
+        
+        novo_preco = input(self.get_success_message("Novo Preço (deixe em branco para manter o atual): "))
+        if novo_preco:
+            try:
+                produto_obj.preco = float(novo_preco)
+            except ValueError:
+                self.get_error_message("Valor digitado não válido. Preço não atualizado!\n")
+        
+        self.mostrar_categorias()
+        nova_categoria = input(self.get_success_message("Nova Categoria (deixe em branco para manter a atual): "))
+        if nova_categoria:
+            try:
+                categoria_int = int(nova_categoria)
+                categoria_obj = self.categoria_controller.find_by_id(categoria_int)
+                while categoria_obj is None:
+                    self.get_error_message("Categoria inválida, digite o ID de uma categoria existente!")
+                    nova_categoria = input(self.get_success_message("Nova Categoria (deixe em branco para manter a atual): "))
+                    categoria_int = int(nova_categoria)
+                    categoria_obj = self.categoria_controller.find_by_id(categoria_int)
+                produto_obj.categoria = categoria_obj
+            except ValueError:
+                self.get_error_message("Valor digitado não é um número. Categoria não atualizada")
+
+        nova_quantidade = input(self.get_success_message("Nova Quantidade (deixe em branco para manter a atual): "))
+        if nova_quantidade:
+            try:
+                nova_quantidade_int = int(nova_quantidade)
+                produto_obj.quantidade = nova_quantidade_int
+            except ValueError:
+                self.get_error_message("Valor digitado não válido. Quantidade não atualizado!\n")
+        
+        nova_unidade = input(self.get_success_message("Nova Unidade de Medida (deixe em branco para manter a atual): "))
+        if nova_unidade:
+            produto_obj.unidade_medida = nova_unidade
+        if self.produto_controller.atualizar_produto(
+                                id=produto_obj.id,
+                                nome=produto_obj.nome,
+                                preco=produto_obj.preco,
+                                categoria=produto_obj.categoria.id,
+                                quantidade=produto_obj.quantidade,
+                                unidade_medida=produto_obj.unidade_medida
+                            ):
+            print(colored("\nProduto atualizado com sucesso!", 'green', attrs=['bold']))
+        else:
+            print(colored("\nFalha ao atualizar o produto.", 'red', attrs=['bold']))
 
     def cadastrar(self):
         """
@@ -52,16 +104,22 @@ class MenuProduto(MenuEntity):
         super().show_title("Cadastrar Produto")
 
         nome = input(self.get_success_message("Nome: "))
-        preco = input(self.get_success_message("Preço: "))
-        categoria = input(self.get_success_message("Categoria: "))
-        quantidade = input(self.get_success_message("Quantidade em estoque: "))
+        preco = get_float(self.get_success_message("Preço: "))
+        self.mostrar_categorias()
+        categoria = get_int(self.get_success_message("Categoria: "))
+        categoria_obj = self.categoria_controller.find_by_id(categoria)
+        while categoria_obj is None:
+            print(self.get_error_message("Erro: Categoria não encontrada, digite uma categoria válida!"))
+            categoria = get_int(self.get_success_message("Categoria: "))
+            categoria_obj = self.categoria_controller.find_by_id(categoria)
+        quantidade = get_int(self.get_success_message("Quantidade em estoque: "))
         unidade_medida = input(self.get_success_message("Unidade de Medida: "))
 
         self.produto_controller.cadastrar_produto(
             nome=nome,
-            preco=float(preco),
-            categoria=int(categoria),
-            quantidade=int(quantidade),
+            preco=preco,
+            categoria=categoria,
+            quantidade=quantidade,
             unidade_medida=unidade_medida,
         )
 
