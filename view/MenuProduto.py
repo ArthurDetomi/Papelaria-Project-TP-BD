@@ -115,13 +115,20 @@ class MenuProduto(MenuEntity):
         quantidade = get_int(self.get_success_message("Quantidade em estoque: "))
         unidade_medida = input(self.get_success_message("Unidade de Medida: "))
 
-        self.produto_controller.cadastrar_produto(
+        is_cadastrado = self.produto_controller.cadastrar_produto(
             nome=nome,
             preco=preco,
             categoria=categoria,
             quantidade=quantidade,
             unidade_medida=unidade_medida,
         )
+        
+        if is_cadastrado:
+            print(colored("\nProduto cadastrado com sucesso!", 'green', attrs=['bold']))
+        else:
+            print(colored("\nFalha ao cadastrar o produto.", 'red', attrs=['bold']))
+        
+        
 
     def remover(self):
         """
@@ -151,7 +158,7 @@ class MenuProduto(MenuEntity):
         produtos = self.produto_controller.listar()
         if produtos:
             for produto in produtos:
-                print(produto)
+                print(produto, "\n")
         else:
             print(self.get_error_message("Nenhum produto cadastrado"))
 

@@ -56,7 +56,7 @@ class Produto:
             f"{colored('Categoria:', 'cyan')} {colored(self.categoria if self.categoria else 'Não foi carregado', 'magenta')}\n"
             f"{colored('Preço:', 'cyan')} {colored(f'R$ {self.preco:.2f}', 'red')}\n"
             f"{colored('Estoque:', 'cyan')} {colored(self.quantidade, 'blue')}\n"
-            f"{colored('Unidade de Medida:', 'cyan')} {colored(self.unidadeMedida if self.unidadeMedida else 'Não informado', 'light_blue')}\n"
+            f"{colored('Unidade de Medida:', 'cyan')} {colored(self.unidade_medida if self.unidade_medida else 'Não informado', 'light_blue')}\n"
             f"{colored('Cadastrado em:', 'cyan')} "
             f"{self.cadastrado.strftime('%d/%m/%Y %H:%M:%S') if self.cadastrado else 'Não informado'}\n"
             f"{colored('Editado em:', 'cyan')} "
