@@ -21,7 +21,13 @@ class MenuAbstrato:
         print(colored("="*40, 'cyan'))
         print(colored(f"    {title}", 'yellow', attrs=['bold']))
         print(colored("="*40, 'cyan'))
-
+    
+    def getSuccessMessage(self, msg : str):
+        return colored(msg, 'green')
+    
+    def getErrorMessage(self, msg : str):
+        return colored(msg, 'red')
+    
     def runOption(self, option : int):
         raise NotImplementedError()
 

@@ -1,3 +1,5 @@
+from termcolor import colored
+
 class Usuario:
     def __init__(self, id=None, login="", senha="", cpf="", cadastrado=None, editado=None):
         self.id = id
@@ -8,5 +10,10 @@ class Usuario:
         self.editado = editado
 
     def __str__(self):
-        return (f"Usuário(ID: {self.id}, Login: {self.login}, CPF: {self.cpf}, "
-                f"Cadastrado: {self.cadastrado}, Editado: {self.editado})")
+        return (
+            f"{colored('ID:', 'cyan')} {self.id} | "
+            f"{colored('Login:', 'yellow')} {self.login} | "
+            f"{colored('CPF:', 'green')} {self.cpf} | "
+            f"{colored('Cadastrado:', 'blue')} {self.cadastrado.strftime('%d/%m/%Y %H:%M:%S') if self.cadastrado else 'Não informado'} | "
+            f"{colored('Editado:', 'magenta')} {self.editado.strftime('%d/%m/%Y %H:%M:%S') if self.editado else 'Não informado'}"
+        )
