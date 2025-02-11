@@ -12,6 +12,9 @@ class MenuProduto(MenuEntity):
         super().__init__()
         self.produto_controller = ProdutoController()
         
+    def showTitle(self, title=""):
+        return super().showTitle("Produtos")
+        
     def atualizar(self):
         super().showTitle("Atualizar Produto")
         

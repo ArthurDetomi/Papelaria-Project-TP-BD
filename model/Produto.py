@@ -20,12 +20,12 @@ class Produto:
         self.cadastrado = cadastrado
         self.editado = editado
 
-     def __str__(self):
+    def __str__(self):
         return f"""
             {colored('ID:', 'cyan')} {colored(self.id, 'yellow')}
             {colored('Produto:', 'cyan')} {colored(self.nome, 'green')}
             {colored('Preço:', 'cyan')} {colored(f'R$ {self.preco:.2f}', 'red')}
             {colored('Estoque:', 'cyan')} {colored(self.quantidade, 'blue')}
-            {colored('Cadastrado em:', 'cyan')} {colored(self.cadastrado, 'magenta')}
-            {colored('Editado em:', 'cyan')} {colored(self.editado, 'yellow')}
+            {colored('Cadastrado em:', 'cyan')} {self.cadastrado.strftime('%d/%m/%Y %H:%M:%S') if self.cadastrado else 'Não informado'}
+            {colored('Editado em:', 'cyan')} {self.editado.strftime('%d/%m/%Y %H:%M:%S') if self.editado else 'Não informado'}
         """
