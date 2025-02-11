@@ -1,10 +1,10 @@
-from view.LoginUI import LoginUi
+from view.LoginUI import LoginUI
 from view.MenuPrincipalUI import MenuPrincipal
 
+
 def main():
-    LoginUi().showMenu()
-    MenuPrincipal().mostrarMenu()
+    LoginUI().show_menu()
+    MenuPrincipal().show_menu()
 
 if __name__ == "__main__":
     main()
-

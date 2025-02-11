@@ -1,5 +1,3 @@
-# config.py
-
 DATABASE_CONFIG = {
     "dbname": "papelaria",
     "user": "lucas",

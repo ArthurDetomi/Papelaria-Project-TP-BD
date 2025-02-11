@@ -1,97 +1,122 @@
+"""Módulo MenuUsuario.
+
+Fornece a interface de menu para o gerenciamento de usuários, permitindo o
+cadastro, listagem, remoção e atualização de usuários.
+"""
+
 from view.MenuEntity import MenuEntity
-
-from util.StringUtil import is_blank
-from util.NumberUtil import get_int
-
 from controller.UsuarioController import UsuarioController
-
-from datetime import datetime
-
 from termcolor import colored
 
+
 class MenuUsuario(MenuEntity):
-    
+    """Menu interativo para operações relacionadas a usuários."""
+
     def __init__(self):
         super().__init__()
         self.usuario_controller = UsuarioController()
-    
-    def showTitle(self):
-        super().showTitle("Usuarios")
-    
+
+    def show_title(self, title="Usuários"):
+        """Exibe o título do menu de usuários."""
+        super().show_title(title)
+
     def cadastrar(self):
-        super().showTitle("Cadastrar Usuarios")
+        """
+        Realiza o cadastro de um novo usuário.
         
+        Solicita as credenciais necessárias (login, senha e CPF) e envia para o controlador.
+        """
+        super().show_title("Cadastrar Usuário")
         print(colored("=== Preencha as credenciais ===\n", 'blue'))
-        
+
         login = input(colored("Login: ", 'green'))
         senha = input(colored("Senha: ", 'green'))
         cpf = input(colored("CPF: ", 'green'))
 
-        is_usuario_cadastrado = self.usuario_controller.cadastrar_usuario(login=login, senha=senha, cpf=cpf)
-        
+        is_usuario_cadastrado = self.usuario_controller.cadastrar_usuario(
+            login=login, senha=senha, cpf=cpf
+        )
+
         if is_usuario_cadastrado:
             print(colored("\nUsuário cadastrado com sucesso!", 'green', attrs=['bold']))
         else:
             print(colored("\nFalha ao cadastrar o usuário.", 'red', attrs=['bold']))
-            
+
     def listar(self):
-        super().showTitle("Lista de Usuários")
-    
+        """
+        Lista todos os usuários cadastrados.
+        """
+        super().show_title("Lista de Usuários")
+
         usuarios = self.usuario_controller.listar_usuarios()
         if usuarios:
             for usuario in usuarios:
                 print(usuario)
         else:
-            print(self.getErrorMessage("Nenhum usuario cadastrado"))
-    
-    def remover(self):
-        super().showTitle("Deletar Usuário")
-        
-        id = input(self.getSuccessMessage("ID do usuário: "))
+            print(self.get_error_message("Nenhum usuário cadastrado"))
 
-        usuario = self.usuario_controller.find_by_id(id)
-        
-        if (usuario == None):
-            print(self.getErrorMessage('\nUsuário não encontrado.'))
+    def remover(self):
+        """
+        Remove um usuário a partir do ID informado.
+        """
+        super().show_title("Deletar Usuário")
+
+        id_usuario = input(self.get_success_message("ID do usuário: "))
+        usuario = self.usuario_controller.find_by_id(id_usuario)
+
+        if usuario is None:
+            print(self.get_error_message("\nUsuário não encontrado."))
             return
-        
-        is_usuario_deletado = self.usuario_controller.deletar_usuario(id)
-        
+
+        is_usuario_deletado = self.usuario_controller.deletar_usuario(id_usuario)
         if is_usuario_deletado:
             print(colored("\nUsuário deletado com sucesso!", 'green', attrs=['bold']))
         else:
             print(colored("\nFalha ao deletar o usuário.", 'red', attrs=['bold']))
-        
-    def atualizar(self):
-        super().showTitle("Atualizar Usuário")
-        id = int(input(self.getSuccessMessage("ID do usuário: ")))
-        login = input(self.getSuccessMessage("Novo Login (deixe em branco para manter o atual): "))
-        senha = input(self.getSuccessMessage("Nova Senha (deixe em branco para manter a atual): "))
-        cpf = input(self.getSuccessMessage("Novo CPF (deixe em branco para manter o atual): "))
 
-        usuario = self.usuario_controller.find_by_id(id)
+    def atualizar(self):
+        """
+        Atualiza os dados de um usuário existente.
         
-        if (usuario == None):
-            print(self.getErrorMessage('\nUsuário não encontrado.'))
+        Solicita novos valores para login, senha e CPF, mantendo os valores atuais se
+        nenhum novo valor for informado.
+        """
+        super().show_title("Atualizar Usuário")
+
+        id_usuario = int(input(self.get_success_message("ID do usuário: ")))
+        novo_login = input(self.get_success_message("Novo Login (deixe em branco para manter o atual): "))
+        nova_senha = input(self.get_success_message("Nova Senha (deixe em branco para manter o atual): "))
+        novo_cpf = input(self.get_success_message("Novo CPF (deixe em branco para manter o atual): "))
+
+        usuario = self.usuario_controller.find_by_id(id_usuario)
+        if usuario is None:
+            print(self.get_error_message("\nUsuário não encontrado."))
             return
-        
-        is_usuario_atualizado = self.usuario_controller.atualizar_usuario(id, login, senha, cpf)
-        
+
+        is_usuario_atualizado = self.usuario_controller.atualizar_usuario(
+            id=id_usuario, login=novo_login, senha=nova_senha, cpf=novo_cpf
+        )
+
         if is_usuario_atualizado:
             print(colored("\nUsuário atualizado com sucesso!", 'green', attrs=['bold']))
         else:
             print(colored("\nFalha ao atualizar o usuário.", 'red', attrs=['bold']))
-     
-    
-    def showOptions(self):
+
+    def show_options(self):
+        """Exibe as opções disponíveis no menu de usuários."""
         print(colored("[0] Voltar", 'red', attrs=['bold']))
         print(colored("[1] Cadastrar", 'green'))
         print(colored("[2] Visualizar", 'green'))
         print(colored("[3] Remover", 'green'))
         print(colored("[4] Atualizar", 'green'))
 
+    def run_option(self, option: int):
+        """
+        Executa a opção selecionada no menu de usuários.
 
-    def runOption(self, option: int):
+        :param option: Opção selecionada.
+        :return: 0 se for sair; caso contrário, executa a ação correspondente.
+        """
         if option == 0:
             return 0
         elif option == 1:
@@ -103,4 +128,4 @@ class MenuUsuario(MenuEntity):
         elif option == 4:
             self.atualizar()
         else:
-            print(colored("Opção Inválida!", 'red', attrs=['bold']))
+            print(colored("Opção inválida!", 'red', attrs=['bold']))

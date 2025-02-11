@@ -1,24 +1,35 @@
+"""Módulo MenuCategoria.
+
+Fornece a interface de menu para o gerenciamento de categorias, permitindo
+o cadastro, listagem, remoção e atualização de categorias.
+"""
+
 from view.MenuEntity import MenuEntity
-
 from controller.CategoriaController import CategoriaController
-
 from util.StringUtil import is_blank
 from util.NumberUtil import get_int
-
 from datetime import datetime
-
 from termcolor import colored
 
+
 class MenuCategoria(MenuEntity):
+    """Menu interativo para operações relacionadas à categoria."""
+
     def __init__(self):
         super().__init__()
         self.categoria_controller = CategoriaController()
 
-    def showTitle(self):
-        super().showTitle("categoria")
+    def show_title(self, title="Categoria"):
+        """Exibe o título do menu de categoria."""
+        super().show_title(title)
 
     def cadastrar(self):
-        super().showTitle("Cadastro de categoria")
+        """
+        Realiza o cadastro de uma nova categoria.
+        
+        Solicita o nome da categoria e exibe mensagens de sucesso ou erro.
+        """
+        super().show_title("Cadastro de Categoria")
 
         while True:
             nome = input(colored("Nome da categoria: ", 'green'))
@@ -32,6 +43,7 @@ class MenuCategoria(MenuEntity):
             except Exception as e:
                 print(colored(f"\nErro: {e}\n", 'red'))
                 print(colored("Ocorreu um erro inesperado ao cadastrar a categoria.", 'red'))
+                return
 
             if is_categoria_cadastrada:
                 print(colored("\nCategoria cadastrada com sucesso!", 'green', attrs=['bold']))
@@ -42,15 +54,19 @@ class MenuCategoria(MenuEntity):
             print(colored("[0] Não", 'red'), colored("[1] Sim", 'green'))
 
             opcao = get_int(msg="\nSelecione: ", min=0, max=1)
-
             if opcao == 0:
                 break
 
     def remover(self):
-        super().showTitle("Deletar categoria")
+        """
+        Remove uma categoria a partir do seu ID.
+        
+        Exibe mensagem de sucesso ou falha e permite a remoção de múltiplas categorias.
+        """
+        super().show_title("Deletar Categoria")
 
         while True:
-            id_categoria = get_int(msg="Informe o id da categoria:", min=1)
+            id_categoria = get_int(msg="Informe o id da categoria: ", min=1)
 
             is_success = self.categoria_controller.deletar(id_categoria)
 
@@ -59,16 +75,18 @@ class MenuCategoria(MenuEntity):
             else:
                 print(colored("\nFalha ao deletar a categoria.", 'red', attrs=['bold']))
 
-            print(colored("\nDeseja deletar mais categoriass?", 'cyan'))
+            print(colored("\nDeseja deletar mais categorias?", 'cyan'))
             print(colored("[0] Não", 'red'), colored("[1] Sim", 'green'))
 
             opcao = get_int(msg="\nSelecione: ", min=0, max=1)
-
             if opcao == 0:
                 break
 
     def listar(self):
-        super().showTitle("Listar categorias")
+        """
+        Lista todas as categorias cadastradas e as exibe na tela.
+        """
+        super().show_title("Listar Categorias")
 
         categorias = self.categoria_controller.find_all()
 
@@ -79,42 +97,49 @@ class MenuCategoria(MenuEntity):
             print(colored("Nenhuma categoria cadastrada.", 'red', attrs=['bold']))
 
     def atualizar(self):
-        super().showTitle("Atualizar categoria")
+        """
+        Atualiza uma categoria existente a partir do seu ID.
+        
+        Solicita o novo nome e atualiza a data de edição.
+        """
+        super().show_title("Atualizar Categoria")
 
-        id = get_int(msg="Informe o id da categoria:", min=1)
+        id_categoria = get_int(msg="Informe o id da categoria: ", min=1)
 
-        categoria = self.categoria_controller.find_by_id(id)
+        categoria = self.categoria_controller.find_by_id(id_categoria)
 
         if categoria is not None:
-            print(colored(f"\ncategoria: {categoria.nome}", 'cyan', attrs=['bold']))
+            print(colored(f"\nCategoria: {categoria.nome}", 'cyan', attrs=['bold']))
 
-            nome = input(colored("\nNova categoria: ", 'green'))
-
-            if nome == "":
-                categoria.nome = categoria.nome
-            else:
-                categoria.nome = nome
-                editado = datetime.now()
-                categoria.editado = editado
+            novo_nome = input(colored("\nNova categoria: ", 'green'))
+            if novo_nome.strip():
+                categoria.nome = novo_nome
+                categoria.editado = datetime.now()
 
             is_categoria_atualizada = self.categoria_controller.atualizar(categoria)
 
             if is_categoria_atualizada:
-                print(colored("\ncategoria atualizada com sucesso!", 'green', attrs=['bold']))
+                print(colored("\nCategoria atualizada com sucesso!", 'green', attrs=['bold']))
             else:
                 print(colored("\nFalha ao atualizar a categoria.", 'red', attrs=['bold']))
         else:
-            print(colored("\ncategoria nao encontrada.", 'red', attrs=['bold']))
+            print(colored("\nCategoria não encontrada.", 'red', attrs=['bold']))
 
-    def showOptions(self):
+    def show_options(self):
+        """Exibe as opções disponíveis no menu de categoria."""
         print(colored("[0] Voltar", 'red', attrs=['bold']))
         print(colored("[1] Cadastrar", 'green'))
         print(colored("[2] Visualizar", 'green'))
         print(colored("[3] Remover", 'green'))
         print(colored("[4] Atualizar", 'green'))
 
+    def run_option(self, option: int):
+        """
+        Executa a opção selecionada no menu de categoria.
 
-    def runOption(self, option: int):
+        :param option: Opção selecionada.
+        :return: 0 se a opção for sair; caso contrário, executa a ação correspondente.
+        """
         if option == 0:
             return 0
         elif option == 1:
@@ -126,9 +151,4 @@ class MenuCategoria(MenuEntity):
         elif option == 4:
             self.atualizar()
         else:
-            print(colored("Opção Inválida!", 'red', attrs=['bold']))
-
-
-
-
-
+            print(colored("Opção inválida!", 'red', attrs=['bold']))
