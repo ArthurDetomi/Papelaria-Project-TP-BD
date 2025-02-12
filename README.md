@@ -7,7 +7,7 @@ Este projeto é um sistema de gestão para uma papelaria, desenvolvido em Python
 - Lucas Valentim
 - Isabelle Cristine
 - Igor Serpa
-- Arthur Detomi
+- Geraldo Arthur Detomi
 
 ## 1. Visão Geral do Projeto
 
