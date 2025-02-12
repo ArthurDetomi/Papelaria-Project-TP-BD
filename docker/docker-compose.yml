@@ -5,11 +5,12 @@ services:
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_USER: lucas
+      POSTGRES_USER: admin
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: db_tp
     volumes:
-      - ../db_schema.sql:/docker-entrypoint-initdb.d/db_schema.sql
+      - ../database_scripts/db_schema.sql:/docker-entrypoint-initdb.d/db_schema.sql
+      - ../database_scripts/populate_db.sql:/:/docker-entrypoint-initdb.d/populate_db.sql
       - db_tp_pgdata:/var/lib/postgresql/data
 
 volumes:
