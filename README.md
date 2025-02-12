@@ -20,7 +20,7 @@ O projeto tem como objetivo gerenciar as operações de uma papelaria, realizand
 - **Linguagem de Programação:** Python
 - **Banco de Dados:** PostgreSQL
 - **Dependências:** Listadas no arquivo `requirements.txt` (localizado no diretório principal)
-- **Scripts SQL:** 
+- **Scripts SQL:**
   - `db_schema.sql` para criação das tabelas.
   - `populate_db.sql` para inserção de dados iniciais.
 - **Configurações de Conexão:** Definidas no arquivo `db.properties`
@@ -36,12 +36,13 @@ O projeto tem como objetivo gerenciar as operações de uma papelaria, realizand
 
 ### 3.1. Criação e Ativação do Ambiente Virtual
 
-1. **Criar o ambiente virtual:**  
+1. **Criar o ambiente virtual:**
+
    ```bash
    python -m venv venv
    ```
 
-2. **Ativar o ambiente virtual:**  
+2. **Ativar o ambiente virtual:**
    - **No Windows:**
      ```bash
      venv\Scripts\activate
@@ -66,12 +67,12 @@ Para que o sistema funcione corretamente, é necessário configurar o banco de d
 ### 4.1. Configuração com PostgreSQL Local
 
 1. **Instalar o PostgreSQL** e garantir que ele esteja em execução.
-2. **Criar o banco de dados e executar os scripts SQL:**  
+2. **Criar o banco de dados e executar os scripts SQL:**
    ```bash
    psql -U admin -d db_tp -f database_scripts/db_schema.sql
    psql -U admin -d db_tp -f database_scripts/populate_db.sql
    ```
-3. **Configurar o arquivo `db.properties`:**  
+3. **Configurar o arquivo `db.properties`:**
    ```properties
    user=admin
    password=123
@@ -82,7 +83,7 @@ Para que o sistema funcione corretamente, é necessário configurar o banco de d
 
 ### 4.2. Configuração com Docker
 
-1. **Navegar até a pasta `docker` e rodar o comando:**  
+1. **Navegar até a pasta `docker` e rodar o comando:**
    ```bash
    docker compose up -d
    ```
@@ -92,7 +93,7 @@ Para que o sistema funcione corretamente, é necessário configurar o banco de d
 
 1. **Ativar o ambiente virtual** e garantir que as dependências estejam instaladas.
 2. **Certificar-se de que o banco de dados está configurado corretamente.**
-3. **Executar o sistema:**  
+3. **Executar o sistema:**
    ```bash
    python main.py
    ```
@@ -103,4 +104,4 @@ Caso ocorra algum erro de conexão, verifique as configurações do `db.properti
 
 Este README fornece as instruções necessárias para configurar e executar o sistema de gestão da papelaria. Seguindo corretamente os passos, o ambiente estará pronto para uso.
 
-**Lucas Valentim, Isabelle Cristine, Igor Serpa, Arthur Detomi**
+**Lucas Valentim, Isabelle Cristine, Igor Serpa, Geraldo Arthur Detomi**
