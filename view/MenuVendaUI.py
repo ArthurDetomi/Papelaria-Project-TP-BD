@@ -169,6 +169,6 @@ class MenuVendaUI(MenuEntity):
         o que pode não ser o comportamento esperado para listar vendas.)
         """
         super().show_title("Lista de Vendas")
-        vendas = self.forma_pagamento_controller.find_all()
+        vendas = self.venda_controller.find_all()
         for venda in vendas:
             print(venda)
