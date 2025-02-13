@@ -15,9 +15,9 @@ INSERT INTO forma_pagamento (nome) VALUES
   ('Pix');
 
 -- Inserindo dados na tabela categoria
-INSERT INTO categoria (nome) VALUES
-  ('Eletrônicos'),
-  ('Papelaria');
+INSERT INTO categoria (id, nome) VALUES
+  (1, 'Eletrônicos'),
+  (2, 'Papelaria');
 
 -- Inserindo dados na tabela produto
 INSERT INTO produto (nome, preco, categoria_id, quantidade, unidade_medida) VALUES
